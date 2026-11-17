@@ -1,5 +1,7 @@
 # NOAA APT DSP decoder
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://noaaaptdsp.streamlit.app)
+
 **Live web app (works on a phone): https://noaaaptdsp.streamlit.app**
 
 Decode **NOAA APT** weather-satellite recordings (audio `.wav`) into images and temperature maps
