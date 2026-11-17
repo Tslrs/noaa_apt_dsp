@@ -122,6 +122,8 @@ ss = st.session_state
 # Bigger touch targets for phones (Apple recommends >= 44 px)
 st.markdown("""
 <style>
+/* Temperature map: keep the image's real shape (909 x 1779 px is a tall image) instead of stretching it wide */
+.st-key-tempmap_box { max-width: 440px; margin-left: auto; margin-right: auto; }
 /* Page width: centred column (about a phone-tablet width) on a computer, full width on a phone */
 .block-container { max-width: 860px !important; }
 .stButton > button, .stDownloadButton > button { min-height: 52px; font-size: 1.05rem; }
@@ -309,8 +311,9 @@ if view == 2:
     else:
         st.caption(tr["temp_help"])
         fig = plots.add_pins(plots.fig_temperature(T["TC"], res["satellite"], tr), ss.pins)
-        event = st.plotly_chart(fig, use_container_width=True, config=PLOT_CFG, on_select="rerun", selection_mode="points",
-                                key="tempmap")
+        with st.container(key="tempmap_box"):
+            event = st.plotly_chart(fig, use_container_width=True, config=PLOT_CFG, on_select="rerun",
+                                    selection_mode="points", key="tempmap")
         pts = (event.selection.points if event and event.selection else []) or []
         if pts and pts[0].get("curve_number") == 1:
             row, col = int(round(pts[0]["y"])) - 1, int(round(pts[0]["x"])) - 1
