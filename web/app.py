@@ -9,8 +9,12 @@ import streamlit.components.v1 as components
 from matplotlib import colormaps
 from PIL import Image
 
+import importlib
+
 import apt_core as ac
 import plots
+
+importlib.reload(plots)   # always use the current plots.py (a long-running server can keep a stale copy in memory)
 
 TR = {
     "el": dict(
