@@ -113,20 +113,23 @@ def fig_wedges(r, tr):
 
 
 def fig_temperature(TC, sat, tr, step=3, pick_step=6):
-    """Heatmap (hover shows deg C) + an invisible scatter grid so a tap/click can pick a point."""
+    """Heatmap + an invisible grid of points. The grid carries the hover text (deg C) and receives taps/clicks
+    (hoverinfo='skip' would also disable click events, so each grid point has its own hovertemplate)."""
+    n_r, n_c = TC.shape
     sub = np.round(TC[::step, ::step], 1).astype(np.float32)
-    ys = np.arange(0, TC.shape[0], step) + 1          # 1-based line/column numbers
-    xs = np.arange(0, TC.shape[1], step) + 1
+    ys = np.arange(0, n_r, step) + 1          # 1-based line/column numbers
+    xs = np.arange(0, n_c, step) + 1
     fig = go.Figure()
     fig.add_trace(go.Heatmap(z=sub, x=xs, y=ys, colorscale="Turbo", zmin=-70, zmax=60,
-                             colorbar=dict(title="°C"),
-                             hovertemplate=tr["hover"] + "<extra></extra>"))
-    gy, gx = np.meshgrid(np.arange(0, TC.shape[0], pick_step) + 1, np.arange(0, TC.shape[1], pick_step) + 1, indexing="ij")
-    fig.add_trace(go.Scattergl(x=gx.ravel(), y=gy.ravel(), mode="markers",
-                               marker=dict(size=7, opacity=0.0), hoverinfo="skip", name="pick", showlegend=False))
-    fig.update_yaxes(autorange="reversed", scaleanchor="x", title_text=tr["line"])
-    fig.update_xaxes(title_text=tr["col"])
-    fig.update_layout(title=f"{sat} - {tr['f_temp']}", height=720, clickmode="event+select",
+                             colorbar=dict(title="°C"), hoverinfo="skip"))
+    gy, gx = np.meshgrid(np.arange(0, n_r, pick_step) + 1, np.arange(0, n_c, pick_step) + 1, indexing="ij")
+    vals = np.round(TC[::pick_step, ::pick_step], 1).astype(np.float32)
+    fig.add_trace(go.Scatter(x=gx.ravel(), y=gy.ravel(), mode="markers", text=[f"{v:.1f}" for v in vals.ravel()],
+                             marker=dict(size=10, opacity=0), hovertemplate=tr["hover"] + "<extra></extra>",
+                               name="pick", showlegend=False))
+    fig.update_xaxes(range=[0.5, n_c + 0.5], title_text=tr["col"])
+    fig.update_yaxes(range=[n_r + 0.5, 0.5], title_text=tr["line"])
+    fig.update_layout(title=f"{sat} - {tr['f_temp']}", height=760, clickmode="event+select", hovermode="closest",
                       **LIGHT)
     return fig
 

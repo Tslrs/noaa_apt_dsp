@@ -1,5 +1,7 @@
 # NOAA APT DSP decoder
 
+**Live web app (works on a phone): https://noaaaptdsp.streamlit.app**
+
 Decode **NOAA APT** weather-satellite recordings (audio `.wav`) into images and temperature maps
 using digital signal processing. Two implementations that give the same results:
 
@@ -19,6 +21,26 @@ using digital signal processing. Two implementations that give the same results:
    Click or hover on the map to read the temperature and see the calculation step by step.
 
 ![temperature map](docs/example_temperature.png)
+
+## Screenshots
+<p>
+<img src="docs/web_app_phone.png" width="260" alt="Web app on a phone: decoded image and the view bar">
+<img src="docs/web_app_phone_points.png" width="260" alt="Web app on a phone: points on the temperature map with the step-by-step calculation">
+</p>
+
+MATLAB app (temperature map, hover/click points, step-by-step calculation):
+
+![MATLAB app](docs/matlab_app.png)
+
+## macOS app (Apple Silicon only: M1 / M2 / M3 / M4)
+A compiled copy of the MATLAB app for Macs with an Apple Silicon chip:
+[`downloads/NOAA_APT_Decoder_macOS_AppleSilicon.zip`](downloads/NOAA_APT_Decoder_macOS_AppleSilicon.zip)
+- It needs the free **MATLAB Runtime R2026b** (Apple Silicon): https://www.mathworks.com/products/compiler/mcr/index.html
+  (large download; no MATLAB licence needed).
+- The app is **not signed by Apple**: remove the quarantine flag or right-click -> Open the first time.
+  The exact steps are in `READ_ME_FIRST.txt` inside the zip.
+- Not for Intel Macs, Windows or Linux. Tested only on the Mac that built it (with a full MATLAB install used
+  as the runtime), **not** yet on a machine with only the Runtime installed.
 
 ## Python web app
 ```
